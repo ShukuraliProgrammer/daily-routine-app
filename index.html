@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A0A0F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>2026 Goals — Shukurali</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiMjAyNiBHb2FscyIsInNob3J0X25hbWUiOiJHb2FscyIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMEEwQTBGIiwidGhlbWVfY29sb3IiOiIjMEEwQTBGIn0=">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    background: linear-gradient(145deg, #0A0A0F 0%, #0F1119 40%, #131520 100%);
+    font-family: 'Segoe UI', 'SF Pro Display', -apple-system, sans-serif;
+    color: #E2E8F0;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 300px; } }
+  .fade-up { animation: fadeUp 0.4s ease both; }
+  .streak-glow { animation: pulse 2s ease infinite; }
+
+  .header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(15,17,25,0.9);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .logo {
+    font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800;
+    background: linear-gradient(135deg, #6366F1, #A855F7, #EC4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  .subtitle { font-family: 'Space Mono', monospace; font-size: 11px; color: #64748B; margin-top: 2px; }
+  .streak-badge {
+    background: linear-gradient(135deg, #F97316, #EAB308);
+    border-radius: 12px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .streak-num { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: #FFF; }
+
+  .tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.04); border-radius: 12px; padding: 4px; }
+  .tab-btn {
+    flex: 1; padding: 8px 0; border-radius: 10px;
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 400;
+    color: #64748B; background: transparent; border: none; cursor: pointer;
+    transition: all 0.2s ease; text-transform: capitalize;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.06); }
+  .tab-btn.active {
+    font-weight: 600; color: #FFF;
+    background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(168,85,247,0.3));
+  }
+
+  .content { padding: 16px 16px 100px; max-width: 600px; margin: 0 auto; }
+
+  .date-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px; padding: 10px 16px;
+    background: rgba(255,255,255,0.03); border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-btn {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: rgba(255,255,255,0.06); color: #94A3B8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; border: none; cursor: pointer; transition: all 0.2s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+  .date-label { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 15px; color: #E2E8F0; text-align: center; }
+  .today-badge { font-family: 'Space Mono', monospace; font-size: 10px; color: #6366F1; display: block; margin-top: 2px; }
+
+  .progress-box {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.06));
+    border-radius: 16px; border: 1px solid rgba(99,102,241,0.15);
+  }
+  .ring-container { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
+  .ring-text {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: #E2E8F0;
+  }
+  .progress-label { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 16px; color: #E2E8F0; }
+  .progress-hint { font-family: 'Space Mono', monospace; font-size: 11px; color: #64748B; margin-top: 2px; }
+
+  .block-list { display: flex; flex-direction: column; gap: 6px; }
+  .block-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px;
+    cursor: pointer; transition: all 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
+  }
+  .block-item:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+  .block-item.work { padding: 16px 14px; }
+  .block-item.checked { opacity: 0.75; }
+
+  .checkbox {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #FFF;
+    border: 2px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+    transition: all 0.2s ease;
+  }
+  .block-name { font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 14px; color: #CBD5E1; }
+  .block-time { font-family: 'Space Mono', monospace; font-size: 10px; color: #4B5563; margin-top: 2px; }
+  .work-badge {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    background: rgba(100,116,139,0.2); color: #94A3B8; padding: 3px 8px; border-radius: 6px;
+  }
+
+  .goal-card {
+    padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06); transition: all 0.2s ease; margin-bottom: 10px;
+  }
+  .goal-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .goal-label { font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 14px; color: #CBD5E1; }
+  .goal-count { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; }
+  .progress-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 10px; }
+  .progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+  .counter-row { display: flex; gap: 8px; justify-content: center; }
+  .counter-btn {
+    width: 36px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; border: none; cursor: pointer; transition: all 0.1s ease;
+  }
+  .counter-btn:hover { background: rgba(255,255,255,0.15) !important; }
+  .counter-btn:active { transform: scale(0.9); }
+  .counter-minus { background: rgba(255,255,255,0.06); color: #94A3B8; }
+  .counter-plus-purple { background: rgba(99,102,241,0.15); color: #A5B4FC; }
+  .counter-plus-orange { background: rgba(249,115,22,0.15); color: #FDBA74; }
+
+  .yearly-summary {
+    padding: 16px 20px; margin-bottom: 16px;
+    background: linear-gradient(135deg, rgba(236,72,153,0.08), rgba(168,85,247,0.06));
+    border-radius: 16px; border: 1px solid rgba(236,72,153,0.15); text-align: center;
+  }
+  .yearly-count { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 20px; color: #E2E8F0; }
+  .yearly-sub { font-family: 'Space Mono', monospace; font-size: 11px; color: #64748B; margin-top: 4px; }
+  .yearly-item {
+    display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px;
+    cursor: pointer; transition: all 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); margin-bottom: 8px;
+  }
+  .yearly-item:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .yearly-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.08);
+    transition: all 0.2s ease;
+  }
+  .yearly-text { font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 14px; color: #94A3B8; flex: 1; }
+
+  /* ===== ADD TASK UI ===== */
+  .add-btn {
+    width: 100%; padding: 14px; border-radius: 14px;
+    background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.1);
+    color: #64748B; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s ease; margin-top: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .add-btn:hover { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.3); color: #A5B4FC; }
+
+  .add-form {
+    margin-top: 12px; padding: 16px; border-radius: 14px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(99,102,241,0.2);
+    animation: slideDown 0.3s ease;
+    overflow: hidden;
+  }
+  .add-form-title {
+    font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600;
+    color: #A5B4FC; margin-bottom: 12px;
+  }
+  .form-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+  .form-input {
+    flex: 1; padding: 10px 14px; border-radius: 10px;
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+    color: #E2E8F0; font-family: 'Outfit', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: rgba(99,102,241,0.5); }
+  .form-input::placeholder { color: #4B5563; }
+  .form-input-sm { width: 90px; flex: none; text-align: center; }
+  .form-label { font-family: 'Space Mono', monospace; font-size: 11px; color: #64748B; min-width: 50px; }
+  .form-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .btn-save {
+    flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer;
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+    background: linear-gradient(135deg, #6366F1, #A855F7); color: #FFF;
+    transition: all 0.2s ease;
+  }
+  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
+  .btn-cancel {
+    padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer;
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+    background: rgba(255,255,255,0.06); color: #94A3B8;
+    transition: all 0.2s ease;
+  }
+  .btn-cancel:hover { background: rgba(255,255,255,0.1); }
+
+  /* Delete button on custom tasks */
+  .delete-btn {
+    width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+    background: rgba(239,68,68,0.1); border: none; color: #FCA5A5;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease; opacity: 0.5;
+  }
+  .delete-btn:hover { opacity: 1; background: rgba(239,68,68,0.2); }
+
+  /* ===== EDIT UI ===== */
+  .edit-btn {
+    width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+    background: rgba(99,102,241,0.1); border: none; color: #A5B4FC;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease; opacity: 0.4;
+  }
+  .edit-btn:hover { opacity: 1; background: rgba(99,102,241,0.2); }
+  .inline-edit {
+    margin: 6px 0; padding: 14px; border-radius: 14px;
+    background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2);
+    animation: slideDown 0.25s ease;
+  }
+  .inline-edit .form-row { margin-bottom: 8px; }
+  .inline-edit .form-actions { margin-top: 10px; }
+
+  .reset-section { margin-top: 40px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+  .reset-btn {
+    padding: 8px 20px; border-radius: 10px;
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+    color: #FCA5A5; font-family: 'Outfit', sans-serif; font-size: 13px;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .reset-btn:hover { background: rgba(239,68,68,0.2); }
+
+  /* Category picker */
+  .cat-picker { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cat-chip {
+    padding: 5px 12px; border-radius: 8px; font-family: 'Outfit', sans-serif;
+    font-size: 12px; font-weight: 500; cursor: pointer; border: 2px solid transparent;
+    transition: all 0.15s ease;
+  }
+  .cat-chip:hover { transform: scale(1.05); }
+  .cat-chip.selected { border-color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ========== DATA ==========
+const DEFAULT_GOALS_2026 = [
+  { id: "ielts", label: "IELTS 7+ Certificate", icon: "🎯", color: "#F97316" },
+  { id: "quran_read", label: "Finish Qur'an reading lessons (no mistakes)", icon: "📖", color: "#10B981" },
+  { id: "quran_complete", label: "Complete Qur'an 10 times", icon: "🕌", color: "#059669" },
+  { id: "job", label: "Get job at Top Tech Company", icon: "💼", color: "#6366F1" },
+  { id: "business", label: "Build $2K-4K/month project/business", icon: "💰", color: "#EAB308" },
+  { id: "travel", label: "Travel to one new country", icon: "✈️", color: "#EC4899" },
+  { id: "leetcode", label: "Solve 400 LeetCode problems (reach 600 rank)", icon: "🧩", color: "#8B5CF6" },
+  { id: "books", label: "Read & finish 10 books", icon: "📚", color: "#F59E0B" },
+  { id: "masters", label: "Prepare for foreign university Master's", icon: "🎓", color: "#14B8A6" },
+];
+
+const DEFAULT_DAILY_BLOCKS = [
+  { id: "fajr", time: "04:00 – 04:30", label: "Fajr & Morning Adhkar", icon: "🌅", category: "spiritual" },
+  { id: "quran", time: "04:30 – 05:30", label: "Qur'an Reading", icon: "📖", category: "spiritual" },
+  { id: "ielts", time: "05:30 – 06:30", label: "IELTS Prep", icon: "🎯", category: "growth" },
+  { id: "exercise", time: "06:30 – 07:00", label: "Exercise / Fresh Air", icon: "🏃", category: "health" },
+  { id: "breakfast", time: "07:00 – 07:30", label: "Breakfast & Get Ready", icon: "🍳", category: "health" },
+  { id: "commute_am", time: "07:30 – 08:30", label: "Commute → Udemy / Podcast", icon: "🎧", category: "growth" },
+  { id: "work", time: "09:00 – 18:00", label: "Work @ Tsoft", icon: "💻", category: "work", isWork: true },
+  { id: "commute_pm", time: "18:00 – 18:30", label: "Commute → Book / Audio", icon: "📚", category: "growth" },
+  { id: "leetcode", time: "18:30 – 19:30", label: "LeetCode Problem Solving", icon: "🧩", category: "growth" },
+  { id: "roadmap", time: "19:30 – 20:15", label: "Staff Engineer Roadmap", icon: "🗺️", category: "growth" },
+  { id: "reading", time: "20:15 – 21:00", label: "Book Reading", icon: "📚", category: "growth" },
+  { id: "isha", time: "21:00 – 21:30", label: "Isha & Evening Adhkar", icon: "🌙", category: "spiritual" },
+  { id: "review", time: "21:30 – 22:00", label: "Day Review & Plan Tomorrow", icon: "📝", category: "review" },
+];
+
+const DEFAULT_WEEKLY_GOALS = [
+  { id: "w_ielts", label: "3 IELTS mock sections", target: 3 },
+  { id: "w_leetcode", label: "8 LeetCode problems", target: 8 },
+  { id: "w_quran", label: "Read Qur'an daily (7/7)", target: 7 },
+  { id: "w_udemy", label: "15 Udemy lessons", target: 15 },
+  { id: "w_book", label: "50+ pages of book", target: 50 },
+  { id: "w_roadmap", label: "Learn 1 new Staff Eng topic", target: 1 },
+];
+
+const DEFAULT_MONTHLY_GOALS = [
+  { id: "m_ielts", label: "1 full IELTS mock exam", target: 1 },
+  { id: "m_leetcode", label: "35 LeetCode problems", target: 35 },
+  { id: "m_quran", label: "Complete 1 Qur'an khatm", target: 1 },
+  { id: "m_book", label: "Finish 1 book", target: 1 },
+  { id: "m_udemy", label: "60 Udemy lessons", target: 60 },
+  { id: "m_puller", label: "Ship 1 Puller feature", target: 1 },
+  { id: "m_explore", label: "Explore 1 new place", target: 1 },
+];
+
+const EMOJI_OPTIONS = ["📌","⭐","🎯","📖","🧩","💻","📚","🏃","💡","🔬","✍️","🎨","🎵","🧠","💪","🌟","📝","🔥","🚀","💰"];
+const YEARLY_COLORS = ["#F97316","#10B981","#6366F1","#EAB308","#EC4899","#8B5CF6","#14B8A6","#F59E0B","#059669","#3B82F6"];
+
+const CAT_COLORS = {
+  spiritual: { bg: "#064E3B", text: "#6EE7B7", accent: "#10B981", label: "Spiritual" },
+  growth:    { bg: "#1E1B4B", text: "#A5B4FC", accent: "#6366F1", label: "Growth" },
+  health:    { bg: "#7C2D12", text: "#FDBA74", accent: "#F97316", label: "Health" },
+  work:      { bg: "#1E293B", text: "#94A3B8", accent: "#64748B", label: "Work" },
+  review:    { bg: "#3B0764", text: "#D8B4FE", accent: "#A855F7", label: "Review" },
+};
+
+// ========== SUPABASE ==========
+const SUPABASE_URL = "https://fbockalnvrtdwvcoukgm.supabase.co";
+const SUPABASE_KEY = "sb_publishable_fulsXj71MWbnos33mA5Gsg_N-xwAMZw";
+const USER_ID = "default_user";
+
+const DB_COLS = ["daily_checks","weekly_progress","monthly_progress","yearly_notes",
+  "custom_daily","custom_weekly","custom_monthly","custom_yearly","edit_overrides"];
+const STATE_KEYS = ["dailyChecks","weeklyProgress","monthlyProgress","yearlyNotes",
+  "customDaily","customWeekly","customMonthly","customYearly","editOverrides"];
+
+// Column name <-> state key mapping
+function colToState(col) { return col.replace(/_([a-z])/g, (_, c) => c.toUpperCase()); }
+function stateToCol(key) { return key.replace(/[A-Z]/g, c => "_" + c.toLowerCase()); }
+
+let syncStatus = "loading"; // "loading" | "synced" | "offline" | "error"
+let syncTimer = null;
+
+// ========== STORAGE (localStorage as cache + Supabase as source of truth) ==========
+const P = "shukurali_goals_";
+function loadLocal(k, fb) { try { const d = localStorage.getItem(P+k); return d ? JSON.parse(d) : fb; } catch { return fb; } }
+function saveLocal(k, d) { try { localStorage.setItem(P+k, JSON.stringify(d)); } catch {} }
+
+async function supaFetch(method, body) {
+  try {
+    const url = `${SUPABASE_URL}/rest/v1/user_data?id=eq.${USER_ID}`;
+    const opts = {
+      method,
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": method === "GET" ? "return=representation" : "return=minimal"
+      }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(url, opts);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (method === "GET") return await res.json();
+    return true;
+  } catch (e) {
+    console.error("Supabase error:", e);
+    return null;
+  }
+}
+
+async function loadFromSupabase() {
+  syncStatus = "loading"; renderSyncBadge();
+  const rows = await supaFetch("GET");
+  if (rows && rows.length > 0) {
+    const row = rows[0];
+    DB_COLS.forEach((col, i) => {
+      const stateKey = STATE_KEYS[i];
+      const val = row[col];
+      if (val !== null && val !== undefined) {
+        S[stateKey] = val;
+        saveLocal(stateKey, val);
+      }
+    });
+    syncStatus = "synced";
+  } else {
+    syncStatus = "offline";
+  }
+  renderSyncBadge();
+  render();
+}
+
+async function pushToSupabase() {
+  const body = {};
+  DB_COLS.forEach((col, i) => { body[col] = S[STATE_KEYS[i]]; });
+  body.updated_at = new Date().toISOString();
+  const ok = await supaFetch("PATCH", body);
+  syncStatus = ok ? "synced" : "offline";
+  renderSyncBadge();
+}
+
+// Debounced sync — pushes 800ms after last change
+function scheduleSync() {
+  clearTimeout(syncTimer);
+  syncStatus = "saving";
+  renderSyncBadge();
+  syncTimer = setTimeout(() => pushToSupabase(), 800);
+}
+
+// Save to both localStorage (instant) and Supabase (debounced)
+function save(k, d) {
+  saveLocal(k, d);
+  scheduleSync();
+}
+
+function renderSyncBadge() {
+  const el = document.getElementById("sync-badge");
+  if (!el) return;
+  const map = {
+    loading: { text: "Loading...", color: "#EAB308" },
+    saving: { text: "Saving...", color: "#EAB308" },
+    synced: { text: "Synced ✓", color: "#10B981" },
+    offline: { text: "Offline", color: "#F97316" },
+    error: { text: "Error", color: "#EF4444" },
+  };
+  const s = map[syncStatus] || map.offline;
+  el.textContent = s.text;
+  el.style.color = s.color;
+  el.style.borderColor = s.color + "44";
+}
+
+// ========== STATE ==========
+let S = {
+  view: "daily",
+  currentDate: new Date(),
+  dailyChecks: loadLocal("dailyChecks", {}),
+  weeklyProgress: loadLocal("weeklyProgress", {}),
+  monthlyProgress: loadLocal("monthlyProgress", {}),
+  yearlyNotes: loadLocal("yearlyNotes", {}),
+  // Custom tasks stored separately
+  customDaily: loadLocal("customDaily", []),
+  customWeekly: loadLocal("customWeekly", []),
+  customMonthly: loadLocal("customMonthly", []),
+  customYearly: loadLocal("customYearly", []),
+  // Edits to default tasks — scoped by date/week/month key
+  // Structure: { "2026-03-14": { "fajr": {time:"..."} }, "W_2026-03-10": {...}, "M_2026-03": {...}, "yearly": {...} }
+  editOverrides: loadLocal("editOverrides", {}),
+  // Form states
+  showForm: null, // "daily" | "weekly" | "monthly" | "yearly" | null
+  editingId: null, // id of task currently being edited
+  formData: {},
+};
+
+function applyOverrides(list, scopeKey) {
+  const scoped = S.editOverrides[scopeKey] || {};
+  return list.map(item => {
+    const ov = scoped[item.id];
+    return ov ? { ...item, ...ov } : item;
+  });
+}
+function getAllDaily() {
+  const dk = getDateKey(S.currentDate);
+  const list = applyOverrides([...DEFAULT_DAILY_BLOCKS, ...S.customDaily], dk);
+  return list.sort((a, b) => {
+    const tA = (a.time || "").match(/(\d{1,2}):(\d{2})/);
+    const tB = (b.time || "").match(/(\d{1,2}):(\d{2})/);
+    const mA = tA ? parseInt(tA[1]) * 60 + parseInt(tA[2]) : 9999;
+    const mB = tB ? parseInt(tB[1]) * 60 + parseInt(tB[2]) : 9999;
+    return mA - mB;
+  });
+}
+function getAllWeekly() { return applyOverrides([...DEFAULT_WEEKLY_GOALS, ...S.customWeekly], getWeekKey(S.currentDate)); }
+function getAllMonthly() { return applyOverrides([...DEFAULT_MONTHLY_GOALS, ...S.customMonthly], getMonthKey(S.currentDate)); }
+function getAllYearly() { return applyOverrides([...DEFAULT_GOALS_2026, ...S.customYearly], "yearly"); }
+
+function getDateKey(d) { return d.toISOString().split("T")[0]; }
+function getWeekKey(d) { const dd = new Date(d); dd.setDate(dd.getDate()-dd.getDay()+1); return "W_"+dd.toISOString().split("T")[0]; }
+function getMonthKey(d) { return `M_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`; }
+function isToday(d) { return getDateKey(d) === getDateKey(new Date()); }
+function uid() { return "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function getStreak() {
+  let s = 0;
+  const all = getAllDaily();
+  const d = new Date();
+  const todayKey = getDateKey(d);
+  const tc = S.dailyChecks[todayKey];
+  if (tc && Object.values(tc).filter(Boolean).length >= all.length * 0.6) s++;
+  d.setDate(d.getDate()-1);
+  while (true) {
+    const k = getDateKey(d);
+    const c = S.dailyChecks[k];
+    if (!c) break;
+    if (Object.values(c).filter(Boolean).length < all.length * 0.6) break;
+    s++; d.setDate(d.getDate()-1);
+  }
+  return s;
+}
+
+// ========== ACTIONS ==========
+function setView(v) { S.view = v; S.showForm = null; render(); }
+function navigateDate(delta) {
+  const d = new Date(S.currentDate);
+  if (S.view === "daily") d.setDate(d.getDate()+delta);
+  else if (S.view === "weekly") d.setDate(d.getDate()+delta*7);
+  else if (S.view === "monthly") d.setMonth(d.getMonth()+delta);
+  S.currentDate = d; render();
+}
+function toggleDaily(id) {
+  const dk = getDateKey(S.currentDate);
+  if (!S.dailyChecks[dk]) S.dailyChecks[dk] = {};
+  S.dailyChecks[dk][id] = !S.dailyChecks[dk][id];
+  save("dailyChecks", S.dailyChecks); render();
+}
+function updateCounter(type, goalId, delta) {
+  const keyMap = { weekly: [getWeekKey, "weeklyProgress"], monthly: [getMonthKey, "monthlyProgress"] };
+  const [keyFn, stateKey] = keyMap[type];
+  const k = keyFn(S.currentDate);
+  if (!S[stateKey][k]) S[stateKey][k] = {};
+  S[stateKey][k][goalId] = Math.max(0, (S[stateKey][k][goalId] || 0) + delta);
+  save(stateKey, S[stateKey]); render();
+}
+function toggleYearly(id) { S.yearlyNotes[id] = !S.yearlyNotes[id]; save("yearlyNotes", S.yearlyNotes); render(); }
+
+// Add task forms
+function showAddForm(type) { S.showForm = S.showForm === type ? null : type; S.formData = { category: "growth", icon: "📌", color: "#6366F1" }; render(); }
+
+function addDailyTask() {
+  const name = document.getElementById("add-name")?.value?.trim();
+  const time = document.getElementById("add-time")?.value?.trim();
+  if (!name) return;
+  S.customDaily.push({ id: uid(), label: name, time: time || "Custom", icon: S.formData.icon || "📌", category: S.formData.category || "growth", isCustom: true });
+  save("customDaily", S.customDaily); S.showForm = null; render();
+}
+function addWeeklyTask() {
+  const name = document.getElementById("add-name")?.value?.trim();
+  const target = parseInt(document.getElementById("add-target")?.value) || 1;
+  if (!name) return;
+  S.customWeekly.push({ id: uid(), label: name, target, isCustom: true });
+  save("customWeekly", S.customWeekly); S.showForm = null; render();
+}
+function addMonthlyTask() {
+  const name = document.getElementById("add-name")?.value?.trim();
+  const target = parseInt(document.getElementById("add-target")?.value) || 1;
+  if (!name) return;
+  S.customMonthly.push({ id: uid(), label: name, target, isCustom: true });
+  save("customMonthly", S.customMonthly); S.showForm = null; render();
+}
+function addYearlyTask() {
+  const name = document.getElementById("add-name")?.value?.trim();
+  if (!name) return;
+  S.customYearly.push({ id: uid(), label: name, icon: S.formData.icon || "⭐", color: S.formData.color || "#6366F1", isCustom: true });
+  save("customYearly", S.customYearly); S.showForm = null; render();
+}
+
+function deleteCustomTask(type, id) {
+  const keyMap = { daily: "customDaily", weekly: "customWeekly", monthly: "customMonthly", yearly: "customYearly" };
+  S[keyMap[type]] = S[keyMap[type]].filter(t => t.id !== id);
+  save(keyMap[type], S[keyMap[type]]); render();
+}
+
+function setFormCat(cat) { S.formData.category = cat; render(); }
+function setFormIcon(icon) { S.formData.icon = icon; render(); }
+function setFormColor(color) { S.formData.color = color; render(); }
+
+// ========== EDIT ACTIONS ==========
+function startEdit(id, type) {
+  // Find the current task data (with overrides applied)
+  const lists = { daily: getAllDaily, weekly: getAllWeekly, monthly: getAllMonthly, yearly: getAllYearly };
+  const task = lists[type]().find(t => t.id === id);
+  if (!task) return;
+  S.editingId = id;
+  S.editType = type;
+  S.showForm = null;
+  S.formData = { ...task };
+  render();
+}
+
+function cancelEdit() { S.editingId = null; S.editType = null; render(); }
+
+function saveEdit() {
+  const id = S.editingId;
+  const type = S.editType;
+  if (!id || !type) return;
+
+  // Determine scope key
+  const scopeKey = type === "daily" ? getDateKey(S.currentDate)
+    : type === "weekly" ? getWeekKey(S.currentDate)
+    : type === "monthly" ? getMonthKey(S.currentDate)
+    : "yearly";
+
+  // Collect updates from form
+  const updates = {};
+  if (type === "daily") {
+    const name = document.getElementById("edit-name")?.value?.trim();
+    const time = document.getElementById("edit-time")?.value?.trim();
+    if (name) updates.label = name;
+    if (time) updates.time = time;
+    updates.category = S.formData.category;
+    updates.icon = S.formData.icon;
+  } else if (type === "weekly" || type === "monthly") {
+    const name = document.getElementById("edit-name")?.value?.trim();
+    const target = parseInt(document.getElementById("edit-target")?.value);
+    if (name) updates.label = name;
+    if (target > 0) updates.target = target;
+  } else if (type === "yearly") {
+    const name = document.getElementById("edit-name")?.value?.trim();
+    if (name) updates.label = name;
+    updates.icon = S.formData.icon;
+    updates.color = S.formData.color;
+  }
+
+  // Check if it's a custom task — update directly + scoped override
+  const customKey = { daily: "customDaily", weekly: "customWeekly", monthly: "customMonthly", yearly: "customYearly" }[type];
+  const customIdx = S[customKey].findIndex(t => t.id === id);
+
+  // Always save as scoped override (per-date/week/month)
+  if (!S.editOverrides[scopeKey]) S.editOverrides[scopeKey] = {};
+  S.editOverrides[scopeKey][id] = { ...(S.editOverrides[scopeKey][id] || {}), ...updates };
+  save("editOverrides", S.editOverrides);
+
+  S.editingId = null; S.editType = null;
+  render();
+}
+
+function resetAll() {
+  if (confirm("Are you sure? This will delete ALL your progress AND custom tasks.")) {
+    S.dailyChecks = {}; S.weeklyProgress = {}; S.monthlyProgress = {}; S.yearlyNotes = {};
+    S.customDaily = []; S.customWeekly = []; S.customMonthly = []; S.customYearly = [];
+    S.editOverrides = {};
+    ["dailyChecks","weeklyProgress","monthlyProgress","yearlyNotes","customDaily","customWeekly","customMonthly","customYearly","editOverrides"].forEach(k => localStorage.removeItem(P+k));
+    pushToSupabase();
+    render();
+  }
+}
+
+// ========== RENDER ==========
+function render() {
+  const app = document.getElementById("app");
+  const streak = getStreak();
+  const dk = getDateKey(S.currentDate);
+  const wk = getWeekKey(S.currentDate);
+  const mk = getMonthKey(S.currentDate);
+  const allDaily = getAllDaily();
+  const allWeekly = getAllWeekly();
+  const allMonthly = getAllMonthly();
+  const allYearly = getAllYearly();
+  const todayChecks = S.dailyChecks[dk] || {};
+  const completedCount = Object.values(todayChecks).filter(Boolean).length;
+  const totalBlocks = allDaily.length;
+  const progress = totalBlocks ? Math.round((completedCount / totalBlocks) * 100) : 0;
+  const dayName = S.currentDate.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+
+  let h = `
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="logo">2026 GOALS</div>
+        <div class="subtitle">Shukurali's Mission Control</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${streak > 0 ? `<div class="streak-badge streak-glow"><span style="font-size:16px">🔥</span><span class="streak-num">${streak}</span></div>` : ""}
+        <span id="sync-badge" style="font-family:'Space Mono',monospace;font-size:10px;padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);color:#64748B;transition:all 0.3s">${syncStatus === "synced" ? "Synced ✓" : syncStatus === "loading" ? "Loading..." : syncStatus === "saving" ? "Saving..." : "Offline"}</span>
+      </div>
+    </div>
+    <div class="tabs">
+      ${["daily","weekly","monthly","yearly"].map(v =>
+        `<button class="tab-btn ${S.view===v?"active":""}" onclick="setView('${v}')">${v}</button>`
+      ).join("")}
+    </div>
+  </div>
+  <div class="content">`;
+
+  // Date nav
+  if (S.view !== "yearly") {
+    let label = dayName;
+    if (S.view === "weekly") label = `Week of ${S.currentDate.toLocaleDateString("en-US",{month:"short",day:"numeric"})}`;
+    if (S.view === "monthly") label = S.currentDate.toLocaleDateString("en-US",{month:"long",year:"numeric"});
+    h += `
+    <div class="date-nav">
+      <button class="nav-btn" onclick="navigateDate(-1)">←</button>
+      <div><div class="date-label">${label}</div>
+        ${S.view==="daily"&&isToday(S.currentDate)?'<span class="today-badge">TODAY</span>':""}
+      </div>
+      <button class="nav-btn" onclick="navigateDate(1)">→</button>
+    </div>`;
+  }
+
+  // ===== DAILY =====
+  if (S.view === "daily") {
+    const hint = progress===100?"Perfect day! 🎉":progress>=60?"Keep pushing! 💪":"Let's get it done 🚀";
+    h += `
+    <div class="progress-box">
+      <div class="ring-container">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="4"/>
+          <circle cx="28" cy="28" r="24" fill="none" stroke="url(#grad)" stroke-width="4"
+            stroke-linecap="round" stroke-dasharray="${progress*1.508} 150.8" transform="rotate(-90 28 28)"
+            style="transition:stroke-dasharray 0.5s ease"/>
+          <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/>
+          </linearGradient></defs>
+        </svg>
+        <div class="ring-text">${progress}%</div>
+      </div>
+      <div>
+        <div class="progress-label">${completedCount} / ${totalBlocks} blocks</div>
+        <div class="progress-hint">${hint}</div>
+      </div>
+    </div>
+    <div class="block-list">`;
+
+    allDaily.forEach((block, i) => {
+      const checked = todayChecks[block.id];
+      const cat = CAT_COLORS[block.category] || CAT_COLORS.growth;
+      const bgS = checked ? `background:linear-gradient(135deg,${cat.bg}88,${cat.bg}44);border-color:${cat.accent}44;` : "";
+      const nc = checked ? cat.text : "#CBD5E1";
+      const cbS = checked ? `background:${cat.accent};border-color:${cat.accent};` : "";
+      const isEditing = S.editingId === block.id;
+
+      if (isEditing) {
+        h += `
+        <div class="inline-edit fade-up" style="animation-delay:${i*30}ms">
+          <div class="add-form-title">✏️ Edit Block</div>
+          <div class="form-row">
+            <span class="form-label">Name</span>
+            <input class="form-input" id="edit-name" value="${block.label.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="form-row">
+            <span class="form-label">Time</span>
+            <input class="form-input" id="edit-time" value="${block.time.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="form-row">
+            <span class="form-label">Icon</span>
+            <div class="cat-picker">${EMOJI_OPTIONS.map(e =>
+              `<span class="cat-chip ${S.formData.icon===e?"selected":""}" onclick="setFormIcon('${e}')"
+                style="background:rgba(255,255,255,0.06);cursor:pointer;font-size:16px;padding:4px 8px">${e}</span>`
+            ).join("")}</div>
+          </div>
+          <div class="form-row">
+            <span class="form-label">Category</span>
+            <div class="cat-picker">${Object.entries(CAT_COLORS).map(([k,v]) =>
+              `<span class="cat-chip ${S.formData.category===k?"selected":""}" onclick="setFormCat('${k}')"
+                style="background:${v.accent}22;color:${v.text}">${v.label}</span>`
+            ).join("")}</div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+            <button class="btn-save" onclick="saveEdit()">Save</button>
+          </div>
+        </div>`;
+      } else {
+        h += `
+        <div class="block-item ${block.isWork?"work":""} ${checked?"checked":""} fade-up"
+             style="${bgS}animation-delay:${i*30}ms" onclick="toggleDaily('${block.id}')">
+          <div class="checkbox" style="${cbS}">${checked?"✓":""}</div>
+          <div style="flex:1;min-width:0">
+            <div class="block-name" style="color:${nc};${checked?"text-decoration:line-through;text-decoration-color:"+cat.accent+"66;":""}">
+              ${block.icon} ${block.label}
+            </div>
+            <div class="block-time">${block.time}</div>
+          </div>
+          ${block.isWork ? '<span class="work-badge">9H</span>' : ""}
+          <button class="edit-btn" onclick="event.stopPropagation();startEdit('${block.id}','daily')" title="Edit">✏️</button>
+          ${block.isCustom ? `<button class="delete-btn" onclick="event.stopPropagation();deleteCustomTask('daily','${block.id}')">✕</button>` : ""}
+        </div>`;
+      }
+    });
+    h += `</div>`;
+
+    // Add daily form
+    h += renderAddButton("daily", "Add time block");
+    if (S.showForm === "daily") {
+      h += `
+      <div class="add-form">
+        <div class="add-form-title">✨ New Daily Block</div>
+        <div class="form-row">
+          <span class="form-label">Name</span>
+          <input class="form-input" id="add-name" placeholder="e.g. Meditation" autofocus>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Time</span>
+          <input class="form-input" id="add-time" placeholder="e.g. 06:00 – 06:30">
+        </div>
+        <div class="form-row">
+          <span class="form-label">Icon</span>
+          <div class="cat-picker">${EMOJI_OPTIONS.map(e =>
+            `<span class="cat-chip ${S.formData.icon===e?"selected":""}" onclick="setFormIcon('${e}')"
+              style="background:rgba(255,255,255,0.06);cursor:pointer;font-size:16px;padding:4px 8px">${e}</span>`
+          ).join("")}</div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Category</span>
+          <div class="cat-picker">${Object.entries(CAT_COLORS).map(([k,v]) =>
+            `<span class="cat-chip ${S.formData.category===k?"selected":""}" onclick="setFormCat('${k}')"
+              style="background:${v.accent}22;color:${v.text}">${v.label}</span>`
+          ).join("")}</div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="showAddForm(null)">Cancel</button>
+          <button class="btn-save" onclick="addDailyTask()">Add Block</button>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ===== WEEKLY =====
+  if (S.view === "weekly") {
+    const wp = S.weeklyProgress[wk] || {};
+    allWeekly.forEach((goal, i) => {
+      const curr = wp[goal.id] || 0;
+      const pct = Math.min(100, Math.round((curr/goal.target)*100));
+      const done = curr >= goal.target;
+      const bg = done ? "background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(5,150,105,0.06));border-color:rgba(16,185,129,0.25);" : "";
+      const isEditing = S.editingId === goal.id;
+
+      if (isEditing) {
+        h += `
+        <div class="inline-edit fade-up" style="animation-delay:${i*50}ms">
+          <div class="add-form-title">✏️ Edit Weekly Goal</div>
+          <div class="form-row">
+            <span class="form-label">Goal</span>
+            <input class="form-input" id="edit-name" value="${goal.label.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="form-row">
+            <span class="form-label">Target</span>
+            <input class="form-input form-input-sm" id="edit-target" type="number" min="1" value="${goal.target}">
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+            <button class="btn-save" onclick="saveEdit()">Save</button>
+          </div>
+        </div>`;
+      } else {
+        h += `
+        <div class="goal-card fade-up" style="${bg}animation-delay:${i*50}ms">
+          <div class="goal-header">
+            <span class="goal-label" style="color:${done?"#6EE7B7":"#CBD5E1"}">${done?"✅ ":""}${goal.label}</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="goal-count" style="color:${done?"#10B981":"#6366F1"}">${curr}/${goal.target}</span>
+              <button class="edit-btn" onclick="startEdit('${goal.id}','weekly')" title="Edit">✏️</button>
+              ${goal.isCustom ? `<button class="delete-btn" onclick="deleteCustomTask('weekly','${goal.id}')">✕</button>` : ""}
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${done?"linear-gradient(90deg,#10B981,#6EE7B7)":"linear-gradient(90deg,#6366F1,#A855F7)"}"></div></div>
+          <div class="counter-row">
+            <button class="counter-btn counter-minus" onclick="updateCounter('weekly','${goal.id}',-1)">−</button>
+            <button class="counter-btn counter-plus-purple" onclick="updateCounter('weekly','${goal.id}',1)">+</button>
+          </div>
+        </div>`;
+      }
+    });
+    h += renderAddButton("weekly", "Add weekly goal");
+    if (S.showForm === "weekly") {
+      h += `
+      <div class="add-form">
+        <div class="add-form-title">✨ New Weekly Goal</div>
+        <div class="form-row">
+          <span class="form-label">Goal</span>
+          <input class="form-input" id="add-name" placeholder="e.g. 5 gym sessions" autofocus>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Target</span>
+          <input class="form-input form-input-sm" id="add-target" type="number" min="1" value="1" placeholder="5">
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="showAddForm(null)">Cancel</button>
+          <button class="btn-save" onclick="addWeeklyTask()">Add Goal</button>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ===== MONTHLY =====
+  if (S.view === "monthly") {
+    const mp = S.monthlyProgress[mk] || {};
+    allMonthly.forEach((goal, i) => {
+      const curr = mp[goal.id] || 0;
+      const pct = Math.min(100, Math.round((curr/goal.target)*100));
+      const done = curr >= goal.target;
+      const bg = done ? "background:linear-gradient(135deg,rgba(234,179,8,0.08),rgba(245,158,11,0.05));border-color:rgba(234,179,8,0.25);" : "";
+      const isEditing = S.editingId === goal.id;
+
+      if (isEditing) {
+        h += `
+        <div class="inline-edit fade-up" style="animation-delay:${i*50}ms">
+          <div class="add-form-title">✏️ Edit Monthly Goal</div>
+          <div class="form-row">
+            <span class="form-label">Goal</span>
+            <input class="form-input" id="edit-name" value="${goal.label.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="form-row">
+            <span class="form-label">Target</span>
+            <input class="form-input form-input-sm" id="edit-target" type="number" min="1" value="${goal.target}">
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+            <button class="btn-save" onclick="saveEdit()">Save</button>
+          </div>
+        </div>`;
+      } else {
+        h += `
+        <div class="goal-card fade-up" style="${bg}animation-delay:${i*50}ms">
+          <div class="goal-header">
+            <span class="goal-label" style="color:${done?"#FDE68A":"#CBD5E1"}">${done?"🏆 ":""}${goal.label}</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="goal-count" style="color:${done?"#EAB308":"#F97316"}">${curr}/${goal.target}</span>
+              <button class="edit-btn" onclick="startEdit('${goal.id}','monthly')" title="Edit">✏️</button>
+              ${goal.isCustom ? `<button class="delete-btn" onclick="deleteCustomTask('monthly','${goal.id}')">✕</button>` : ""}
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${done?"linear-gradient(90deg,#EAB308,#FDE68A)":"linear-gradient(90deg,#F97316,#FB923C)"}"></div></div>
+          <div class="counter-row">
+            <button class="counter-btn counter-minus" onclick="updateCounter('monthly','${goal.id}',-1)">−</button>
+            <button class="counter-btn counter-plus-orange" onclick="updateCounter('monthly','${goal.id}',1)">+</button>
+          </div>
+        </div>`;
+      }
+    });
+    h += renderAddButton("monthly", "Add monthly goal");
+    if (S.showForm === "monthly") {
+      h += `
+      <div class="add-form">
+        <div class="add-form-title">✨ New Monthly Goal</div>
+        <div class="form-row">
+          <span class="form-label">Goal</span>
+          <input class="form-input" id="add-name" placeholder="e.g. Complete 1 online course" autofocus>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Target</span>
+          <input class="form-input form-input-sm" id="add-target" type="number" min="1" value="1" placeholder="1">
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="showAddForm(null)">Cancel</button>
+          <button class="btn-save" onclick="addMonthlyTask()">Add Goal</button>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ===== YEARLY =====
+  if (S.view === "yearly") {
+    const doneCount = allYearly.filter(g => S.yearlyNotes[g.id]).length;
+    const yPct = allYearly.length ? Math.round((doneCount/allYearly.length)*100) : 0;
+    h += `
+    <div class="yearly-summary">
+      <div class="yearly-count">${doneCount} / ${allYearly.length}</div>
+      <div class="yearly-sub">yearly goals completed</div>
+      <div class="progress-bar" style="margin-top:12px">
+        <div class="progress-fill" style="width:${yPct}%;background:linear-gradient(90deg,#EC4899,#A855F7,#6366F1)"></div>
+      </div>
+    </div>`;
+
+    allYearly.forEach((goal, i) => {
+      const done = S.yearlyNotes[goal.id];
+      const bg = done ? `background:linear-gradient(135deg,${goal.color}15,${goal.color}08);border-color:${goal.color}33;` : "";
+      const iBg = done ? `background:${goal.color}22;border-color:${goal.color};` : "";
+      const isEditing = S.editingId === goal.id;
+
+      if (isEditing) {
+        h += `
+        <div class="inline-edit fade-up" style="animation-delay:${i*40}ms">
+          <div class="add-form-title">✏️ Edit Yearly Goal</div>
+          <div class="form-row">
+            <span class="form-label">Goal</span>
+            <input class="form-input" id="edit-name" value="${goal.label.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="form-row">
+            <span class="form-label">Icon</span>
+            <div class="cat-picker">${EMOJI_OPTIONS.map(e =>
+              `<span class="cat-chip ${S.formData.icon===e?"selected":""}" onclick="setFormIcon('${e}')"
+                style="background:rgba(255,255,255,0.06);cursor:pointer;font-size:16px;padding:4px 8px">${e}</span>`
+            ).join("")}</div>
+          </div>
+          <div class="form-row">
+            <span class="form-label">Color</span>
+            <div class="cat-picker">${YEARLY_COLORS.map(c =>
+              `<span class="cat-chip ${S.formData.color===c?"selected":""}" onclick="setFormColor('${c}')"
+                style="background:${c};width:28px;height:28px;border-radius:8px;padding:0"></span>`
+            ).join("")}</div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+            <button class="btn-save" onclick="saveEdit()">Save</button>
+          </div>
+        </div>`;
+      } else {
+        h += `
+        <div class="yearly-item fade-up" style="${bg}animation-delay:${i*40}ms" onclick="toggleYearly('${goal.id}')">
+          <div class="yearly-icon" style="${iBg}">${done?"✅":goal.icon}</div>
+          <span class="yearly-text" style="color:${done?"#FFF":"#94A3B8"};${done?"text-decoration:line-through;text-decoration-color:"+goal.color+"66;":""}">${goal.label}</span>
+          <button class="edit-btn" onclick="event.stopPropagation();startEdit('${goal.id}','yearly')" title="Edit">✏️</button>
+          ${goal.isCustom ? `<button class="delete-btn" onclick="event.stopPropagation();deleteCustomTask('yearly','${goal.id}')">✕</button>` : ""}
+        </div>`;
+      }
+    });
+
+    h += renderAddButton("yearly", "Add yearly goal");
+    if (S.showForm === "yearly") {
+      h += `
+      <div class="add-form">
+        <div class="add-form-title">✨ New Yearly Goal</div>
+        <div class="form-row">
+          <span class="form-label">Goal</span>
+          <input class="form-input" id="add-name" placeholder="e.g. Learn a new language" autofocus>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Icon</span>
+          <div class="cat-picker">${EMOJI_OPTIONS.map(e =>
+            `<span class="cat-chip ${S.formData.icon===e?"selected":""}" onclick="setFormIcon('${e}')"
+              style="background:rgba(255,255,255,0.06);cursor:pointer;font-size:16px;padding:4px 8px">${e}</span>`
+          ).join("")}</div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Color</span>
+          <div class="cat-picker">${YEARLY_COLORS.map(c =>
+            `<span class="cat-chip ${S.formData.color===c?"selected":""}" onclick="setFormColor('${c}')"
+              style="background:${c};width:28px;height:28px;border-radius:8px;padding:0"></span>`
+          ).join("")}</div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="showAddForm(null)">Cancel</button>
+          <button class="btn-save" onclick="addYearlyTask()">Add Goal</button>
+        </div>
+      </div>`;
+    }
+  }
+
+  // Reset
+  h += `
+    <div class="reset-section">
+      <button class="reset-btn" onclick="resetAll()">🗑 Reset All Data</button>
+    </div>
+  </div>`;
+
+  app.innerHTML = h;
+
+  // Auto-focus first input in add/edit form
+  const inp = document.getElementById("add-name") || document.getElementById("edit-name");
+  if (inp) setTimeout(() => inp.focus(), 50);
+}
+
+function renderAddButton(type, label) {
+  if (S.showForm === type) return "";
+  return `<button class="add-btn" onclick="showAddForm('${type}')">
+    <span style="font-size:18px;line-height:1">+</span> ${label}
+  </button>`;
+}
+
+// ========== INIT ==========
+render(); // Render immediately from localStorage cache
+loadFromSupabase(); // Then sync from Supabase (updates UI when done)
+
+// Re-sync when tab becomes visible again (user switches back)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") loadFromSupabase();
+});
+</script>
+</body>
+</html>
